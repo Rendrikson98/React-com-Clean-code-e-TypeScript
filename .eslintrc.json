@@ -1,14 +1,25 @@
 {
-    "extends": "standard-with-typescript",
-    "parserOptions": {
-        "project": "./tsconfig.json"
+    "extends": [
+        "standard-with-typescript"
+    ],
+    "env": {
+        "es6": true,
+        // seu ambiente, node e/ou navegador:
+        "node": true,
+        "browser": true
     },
-    "rules": {
-        "@typescript-eslint/consistent-type-definitions": "off",
-        "@typescript-eslint/strict-boolean-expressions": "off",
-        "@typescript-eslint/camelcase": "off",
-        "no-unused-vars": "off"
-       
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "parserOptions": {
+            "project": "./tsconfig.json"
+        },
+        "rules": {
+            "@typescript-eslint/consistent-type-definitions": "off",
+            "@typescript-eslint/strict-boolean-expressions": "off",
+            "@typescript-eslint/camelcase": "off",
+            "no-unused-vars": "off",
+            "prefer-destructuring": "off"
+        }
     }
- 
 }
