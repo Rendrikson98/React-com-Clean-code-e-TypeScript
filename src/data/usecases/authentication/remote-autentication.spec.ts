@@ -1,8 +1,7 @@
-import { HttpStatusCode } from '@/data/Protocols/http/http-response'
-import { HttpPostClientSpy } from '@/data/test/mock-http-client'
-import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
-import { UnexpectedError } from '@/domain/erros/unexpected-credentials-error'
-import { mockAuthentication } from '@/domain/teste/mock-authentication'
+import { HttpStatusCode } from '@/data/Protocols/http'
+import { HttpPostClientSpy } from '@/data/test'
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/erros'
+import { mockAuthentication } from '@/domain/teste'
 import * as faker from 'faker'
 import { RemoteAuthentication } from './remote-authetication'
 
