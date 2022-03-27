@@ -1,16 +1,14 @@
 import Spinner from '@/presentation/pages/login/componentes/spinner/spinner';
 import React from "react";
-import Logo from './componentes/logo/logo';
+import Footer from './componentes/footer/footer';
+import Header from './componentes/login-header/login-header';
 import Styles from './login-styles.scss';
 type Props = {}
 
 const Login = (props: Props) => {
   return (
     <div className={Styles.login}>
-      <header className={Styles.header}>
-        <Logo />
-        <h1>4Dev - Enquetes para Programadores</h1>
-      </header>
+      <Header />
       <form className={Styles.form}>
         <h2>Login</h2>
         <div className={Styles.inputWrap}>
@@ -29,7 +27,7 @@ const Login = (props: Props) => {
           <span className={Styles.error}>Error</span>
         </div>
       </form>
-      <footer className={Styles.footer}></footer>
+      <Footer />
     </div>
   )
 }
