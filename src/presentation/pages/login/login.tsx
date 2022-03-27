@@ -1,6 +1,6 @@
-import Spinner from '@/presentation/pages/login/componentes/spinner/spinner';
 import React from "react";
 import Footer from './componentes/footer/footer';
+import Form from './componentes/form-status/form';
 import Input from './componentes/input/input';
 import Header from './componentes/login-header/login-header';
 import Styles from './login-styles.scss';
@@ -16,10 +16,7 @@ const Login = (props: Props) => {
         < Input type='password' name='password' placeholder='Digite sua senha' />
         <button className={Styles.submit} type="submit">Entrar</button>
         <span className={Styles.link}>Criar conta</span>
-        <div className={Styles.errorWrap}>
-          <Spinner className={Styles.spinner} />
-          <span className={Styles.error}>Error</span>
-        </div>
+        <Form />
       </form>
       <Footer />
     </div>
