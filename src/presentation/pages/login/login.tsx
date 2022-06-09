@@ -3,7 +3,7 @@ import { Footer, Form, Input, LoginHeader } from './componentes';
 import Styles from './login-styles.scss';
 type Props = {}
 
-const Login = (props: Props) => {
+const Login: React.FC = (props: Props) => {
   return (
     <div className={Styles.login}>
       <LoginHeader />
