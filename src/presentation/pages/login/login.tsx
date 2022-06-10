@@ -5,13 +5,14 @@ import Context from "@/presentation/contexts/form/form-context"
 import { Validation } from "@/presentation/protocols/validation";
 
 type Props = {
-  validation?: Validation
+  validation: Validation
 }
 
 const Login: React.FC<Props> = ({validation}: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     email: '',
+    password: '',
     emailError: "Campo obrigatório",
     passwordError: "Campo obrigatório",
     mainError: ""
@@ -21,6 +22,9 @@ const Login: React.FC<Props> = ({validation}: Props) => {
   useEffect(()=>{
     validation.validate({email: state.email})
   }, [state.email])
+  useEffect(()=>{
+    validation.validate({password: state.password})
+  }, [state.password])
 
   return (
     <div className={Styles.login}>
