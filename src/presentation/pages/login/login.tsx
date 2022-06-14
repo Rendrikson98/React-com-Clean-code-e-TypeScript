@@ -15,9 +15,9 @@ const Login: React.FC<Props> = ({validation, authentication}: Props) => {
     isLoading: false,
     email: '',
     password: '',
-    emailError: "",
-    passwordError: "",
-    mainError: ""
+    emailError: '',
+    passwordError: '',
+    mainError: ''
     
   });
 
@@ -30,15 +30,21 @@ const Login: React.FC<Props> = ({validation, authentication}: Props) => {
   }, [state.email, state.password])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault();;
-    if(state.isLoading || state.emailError || state.passwordError){
-      return
+    event.preventDefault();
+    try {
+      if(state.isLoading || state.emailError || state.passwordError){
+        return
+      }
+      setState({...state, isLoading: true})
+      await authentication.auth({
+        email: state.email,
+        password: state.password
+      })
+    } catch (error) {
+      setState({...state, isLoading: false, mainError: error.message})
+      console.log(state.mainError)
     }
-    setState({...state, isLoading: true})
-    await authentication.auth({
-      email: state.email,
-      password: state.password
-    })
+    
   }
 
   return (
