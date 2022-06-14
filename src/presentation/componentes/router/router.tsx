@@ -6,8 +6,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 class ValidationSpy implements Validation {
   errorMessage:string
   input:object
-  validate(input: object): string {
-      this.input = input
+  validate(fieldName: string, fieldValue: string): string {
+      fieldName
+      fieldValue
       return this.errorMessage
   }
 }

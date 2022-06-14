@@ -1,21 +1,16 @@
 import React from 'react';
 import {cleanup, fireEvent, render, RenderResult} from '@testing-library/react'
 import Login from './login';
-import { Validation } from '@/presentation/protocols/validation';
+import { ValidationSpy } from '@/presentation/test';
+
+
 
 type SutTypes = { 
     sut: RenderResult
     validationSpy:  ValidationSpy
 }
 
-class ValidationSpy implements Validation {
-    errorMessage:string
-    input:object
-    validate(input: object): string {
-        this.input = input
-        return this.errorMessage
-    }
-}
+
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
@@ -45,17 +40,16 @@ describe('Login component', ()=>{
         const {sut, validationSpy} = makeSut();
         const emailInput = sut.getByTestId('email');
         fireEvent.input(emailInput, {target: {value: 'any_email'}});
-        expect(validationSpy.input).toEqual({
-            email: 'any_email'
-        })
+        expect(validationSpy.fieldName).toEqual('email');
+        expect(validationSpy.fieldValue).toEqual('any_email');
+
     })
 
     test('Should call Validationwith correct password', () => {
         const {sut, validationSpy} = makeSut();
         const passwordInput = sut.getByTestId('password');
         fireEvent.input(passwordInput, {target: {value: 'any_password'}});
-        expect(validationSpy.input).toEqual({
-            password: 'any_password'
-        })
+        expect(validationSpy.fieldName).toEqual('password');
+        expect(validationSpy.fieldValue).toEqual('any_password');
     })
 })
