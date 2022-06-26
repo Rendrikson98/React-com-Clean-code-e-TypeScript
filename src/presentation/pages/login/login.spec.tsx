@@ -1,5 +1,8 @@
 import React from 'react';
+import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
+import {createMemoryHistory} from 'history';
 import faker from 'faker'
+import 'jest-localstorage-mock';
 import {cleanup, fireEvent, render, RenderResult, waitFor} from '@testing-library/react'
 import Login from './login';
 import { ValidationStub, AuthenticationSpy } from '@/presentation/test';
@@ -15,12 +18,17 @@ type SutParams = {
     validationError:  string
 }
 
+const history = createMemoryHistory({initialEntries: ['/login']})
 
 const makeSut = (params?: SutParams): SutTypes => {
     const validationStub = new ValidationStub()
     const authenticationSpy = new AuthenticationSpy()
     validationStub.errorMessage = params?.validationError
-    const sut = render(<Login validation={validationStub} authentication={authenticationSpy}/>);
+    const sut = render(
+    <HistoryRouter history={history}>
+        <Login validation={validationStub} authentication={authenticationSpy}/>
+    </HistoryRouter>
+        );
     return{
         sut,
         authenticationSpy
@@ -30,7 +38,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()):void =>{
     populateEmailField(sut, email);
     populatepasswordField(sut, password);
-    const submitButton = sut.getByTestId('submit') as HTMLButtonElement
+    const submitButton = sut.getByTestId('submit')
     fireEvent.click(submitButton);
 }
 
@@ -51,7 +59,13 @@ const simulateStatusForfield = (sut: RenderResult, fieldName: string, validation
 }
 
 describe('Login component', ()=>{
-    afterEach(cleanup)
+    afterEach(()=>{
+        cleanup
+    })
+    beforeEach(()=>{
+        localStorage.clear()
+    })
+
     test('Should start with initial state', () => {
         const validationError = faker.random.words();
         const {sut} = makeSut({validationError});
@@ -141,5 +155,18 @@ describe('Login component', ()=>{
         expect(mainError.textContent).toBe(error.message)
         expect(errorWrap.childElementCount).toBe(1)
     })*/
+    /*test('Should add accessToken to localStorage on success', async () => {
+        const {sut, authenticationSpy} = makeSut();
+        simulateValidSubmit(sut)
+        await waitFor(() => sut.getByTestId('form'))
+        expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken);
+    })*/
+
+    test('Should go to signup page', async () => {
+        const {sut} = makeSut();
+        const register = sut.getByTestId('signup');
+        fireEvent.click(register)
+        expect(history.location.pathname).toBe('/signup')
+    })
 
 })
