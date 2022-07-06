@@ -13,7 +13,8 @@ const makeSut = (fieldName: string): SutTypes => {
     new FieldvalidationSpy(fieldName)
   ]
   const sut = ValidationComposite.build(fieldValidationsSpy);
-  /*const sut = ValidationComposite.build([
+  /* Podia ser feito assim
+  const sut = ValidationComposite.build([
     ...ValidationBuilder.field('email').required().email().build(),
     ...ValidationBuilder.field('email').required().email().build()
   ]);*/
