@@ -1,17 +1,17 @@
-import { FieldvalidationSpy } from "../test/mock-field-validation";
-import { ValidationComposite } from "./validation-composite";
-import faker from 'faker'
+import { FieldvalidationSpy } from '../../test';
+import { ValidationComposite } from './validation-composite';
+import faker from 'faker';
 
 type SutTypes = {
-  sut: ValidationComposite,
-  fieldValidationsSpy: FieldvalidationSpy[]
-}
+  sut: ValidationComposite;
+  fieldValidationsSpy: FieldvalidationSpy[];
+};
 
 const makeSut = (fieldName: string): SutTypes => {
   const fieldValidationsSpy = [
     new FieldvalidationSpy(fieldName),
-    new FieldvalidationSpy(fieldName)
-  ]
+    new FieldvalidationSpy(fieldName),
+  ];
   const sut = ValidationComposite.build(fieldValidationsSpy);
   /* Podia ser feito assim
   const sut = ValidationComposite.build([
@@ -20,25 +20,25 @@ const makeSut = (fieldName: string): SutTypes => {
   ]);*/
   return {
     sut,
-    fieldValidationsSpy
-  }
-}
+    fieldValidationsSpy,
+  };
+};
 
-describe('ValidationComposite', ()=>{
-  test('Should return error if any validation fails', ()=>{
+describe('ValidationComposite', () => {
+  test('Should return error if any validation fails', () => {
     const fieldName = faker.database.column();
-    const {sut, fieldValidationsSpy} = makeSut(fieldName);
-    const errorMessage =  faker.random.words()
-    fieldValidationsSpy[0].error = new Error(errorMessage)
-    fieldValidationsSpy[1].error = new Error(faker.random.words())
+    const { sut, fieldValidationsSpy } = makeSut(fieldName);
+    const errorMessage = faker.random.words();
+    fieldValidationsSpy[0].error = new Error(errorMessage);
+    fieldValidationsSpy[1].error = new Error(faker.random.words());
     const error = sut.validate(fieldName, faker.random.word());
-    expect(error).toBe(errorMessage)
-  })
-  
-  test('Should return success', ()=>{
+    expect(error).toBe(errorMessage);
+  });
+
+  test('Should return success', () => {
     const fieldName = faker.database.column();
-    const {sut} = makeSut(fieldName);
+    const { sut } = makeSut(fieldName);
     const error = sut.validate(fieldName, faker.random.word());
-    expect(error).toBeFalsy()
-  })
-})
+    expect(error).toBeFalsy();
+  });
+});
