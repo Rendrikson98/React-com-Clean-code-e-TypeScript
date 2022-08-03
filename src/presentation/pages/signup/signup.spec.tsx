@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  cleanup,
-  fireEvent,
-  render,
-  RenderResult,
-} from '@testing-library/react';
+import { cleanup, render, RenderResult } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import Signup from './Signup';
 import { Helper, ValidationStub } from '@/presentation/test';
@@ -20,19 +15,11 @@ type SutParams = {
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
+  validationStub.errorMessage = params?.validationError;
   const sut = render(<Signup validation={validationStub} />);
   return {
     sut,
   };
-};
-
-const populateField = (
-  sut: RenderResult,
-  fieldName: string,
-  value = faker.random.word()
-): void => {
-  const input = sut.getByTestId(fieldName);
-  fireEvent.input(input, { target: { value: value } });
 };
 
 describe('Login component', () => {
@@ -48,7 +35,7 @@ describe('Login component', () => {
     const { sut } = makeSut({ validationError });
     Helper.testChildCount(sut, 'error-wrap', 0);
     Helper.testButtonIsDisable(sut, 'submit', true);
-    Helper.testStatusForfield(sut, 'name');
+    Helper.testStatusForfield(sut, 'name', validationError);
     Helper.testStatusForfield(sut, 'email', 'Campo obrigatório');
     Helper.testStatusForfield(sut, 'password', 'Campo obrigatório');
     Helper.testStatusForfield(sut, 'passwordConfirmation', 'Campo obrigatório');
@@ -57,7 +44,7 @@ describe('Login component', () => {
   test('Should show name error if Validation fails', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    populateField(sut, 'name');
-    Helper.testStatusForfield(sut, 'name');
+    Helper.populateField(sut, 'name');
+    Helper.testStatusForfield(sut, 'name', validationError);
   });
 });
