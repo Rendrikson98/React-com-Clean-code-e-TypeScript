@@ -156,4 +156,12 @@ describe('Login component', () => {
     await simulateValidSubmit(sut);
     expect(addAccountSpy.callsCount).toBe(1);
   });
+
+  test('Should call not Authentication is form is invalid', () => {
+    const validationError = faker.random.words();
+    const { sut, addAccountSpy } = makeSut({ validationError });
+    Helper.populateField(sut, 'password');
+    fireEvent.submit(sut.getByTestId('form'));
+    expect(addAccountSpy.callsCount).toBe(0);
+  });
 });
