@@ -57,7 +57,12 @@ const Signup: React.FC<Props> = ({ validation }: Props) => {
           />
           <button
             data-testid="submit"
-            disabled
+            disabled={
+              !!state.nameError ||
+              !!state.emailError ||
+              !!state.passwordError ||
+              !!state.passwordConfirmationError
+            } //Se tiver error o botão é desabilitado
             className={Styles.submit}
             type="submit"
           >
