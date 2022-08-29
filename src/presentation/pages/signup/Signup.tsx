@@ -44,7 +44,9 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-
+    if (state.isLoading || state.emailError || state.passwordError) {
+      return;
+    } // serve para evitar enviar requisições com vários clicks
     setState({ ...state, isLoading: true });
     await addAccount.add({
       name: state.name,
