@@ -10,26 +10,39 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import Signup from './Signup';
 import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test';
 import faker from 'faker';
+import { createMemoryHistory } from 'history';
+import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token';
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
   validationError: string;
 };
 
+const history = createMemoryHistory({ initialEntries: ['/SignUp'] });
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError;
   const addAccountSpy = new AddAccountSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   const sut = render(
-    <Signup validation={validationStub} addAccount={addAccountSpy} />
+    <HistoryRouter history={history}>
+      <Signup
+        validation={validationStub}
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </HistoryRouter>
   );
   return {
     sut,
     addAccountSpy,
+    saveAccessTokenMock,
   };
 };
 
