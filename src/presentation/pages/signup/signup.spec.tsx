@@ -8,11 +8,12 @@ import {
 } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import Signup from './Signup';
-import { Helper, ValidationStub } from '@/presentation/test';
+import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test';
 import faker from 'faker';
 
 type SutTypes = {
   sut: RenderResult;
+  addAccountSpy: AddAccountSpy;
 };
 
 type SutParams = {
@@ -22,9 +23,13 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError;
-  const sut = render(<Signup validation={validationStub} />);
+  const addAccountSpy = new AddAccountSpy();
+  const sut = render(
+    <Signup validation={validationStub} addAccount={addAccountSpy} />
+  );
   return {
     sut,
+    addAccountSpy,
   };
 };
 
@@ -127,7 +132,21 @@ describe('Login component', () => {
   test('Should show spinner on submit', async () => {
     const { sut } = makeSut();
     await simulateValidSubmit(sut);
-    const spinner = sut.getByTestId('spinner');
-    expect(spinner).toBeTruthy();
+    Helper.testElementExists(sut, 'spinner');
+  });
+
+  test('Should call AddAccount with correct values', async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const name = faker.random.word();
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+    const passwordConfirmation = password;
+    await simulateValidSubmit(sut, name, email, password);
+    expect(addAccountSpy.params).toEqual({
+      name,
+      email,
+      password,
+      passwordConfirmation: password,
+    });
   });
 });

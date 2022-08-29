@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MakeLogin from '@/main/factories/pages/login/login-factory';
 import { Signup } from '@/presentation/pages';
-import { ValidationStub } from '@/presentation/test';
+import { AddAccountSpy, ValidationStub } from '@/presentation/test';
 
 const validationStub = new ValidationStub();
+const addAccountSpy = new AddAccountSpy();
 
 const Router: React.FC = () => {
   return (
@@ -12,7 +13,9 @@ const Router: React.FC = () => {
       <Routes>
         <Route
           path="/signup"
-          element={<Signup validation={validationStub} />}
+          element={
+            <Signup validation={validationStub} addAccount={addAccountSpy} />
+          }
         />
         <Route path="/login" element={<MakeLogin />} />
       </Routes>

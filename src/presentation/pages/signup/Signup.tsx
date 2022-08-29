@@ -4,12 +4,15 @@ import Styles from './signup-style.scss';
 import Context from '@/presentation/contexts/form/form-context';
 import { Link, useNavigate } from 'react-router-dom';
 import { Validation } from '@/presentation/protocols/validation';
+import { AddAccount } from '@/domain/usecases';
+import { AddAccountSpy } from '@/presentation/test';
 
 type Props = {
   validation: Validation;
+  addAccount: AddAccount;
 };
 
-const Signup: React.FC<Props> = ({ validation }: Props) => {
+const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     name: '',
@@ -43,6 +46,12 @@ const Signup: React.FC<Props> = ({ validation }: Props) => {
     event.preventDefault();
 
     setState({ ...state, isLoading: true });
+    await addAccount.add({
+      name: state.name,
+      email: state.email,
+      password: state.password,
+      passwordConfirmation: state.passwordConfirmation,
+    });
   };
 
   return (
