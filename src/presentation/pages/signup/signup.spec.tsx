@@ -177,4 +177,11 @@ describe('Login component', () => {
     fireEvent.submit(sut.getByTestId('form'));
     expect(addAccountSpy.callsCount).toBe(0);
   });
+
+  test('Should go to login page', async () => {
+    const { sut } = makeSut();
+    const loginLink = sut.getByTestId('login-link');
+    fireEvent.click(loginLink);
+    expect(history.location.pathname).toBe('/login');
+  });
 });
