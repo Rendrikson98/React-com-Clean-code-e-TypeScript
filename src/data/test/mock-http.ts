@@ -13,6 +13,10 @@ export const mockPostrequest = (): HttpPostParams => ({
   body: faker.random.objectElement(),
 });
 
+export const mockGetrequest = (): HttpGetParams => ({
+  url: faker.internet.url(),
+});
+
 export class HttpPostClientSpy<ResponseType>
   implements HttpPostClient<ResponseType>
 {
