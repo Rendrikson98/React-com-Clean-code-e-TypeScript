@@ -63,5 +63,14 @@ describe('AxiosHttpClient', () => {
         body: axiosResponse.data,
       });
     });
+
+    test('Should return correct error on axios.get', () => {
+      const { sut, mockedAxios } = makesut();
+      mockedAxios.get.mockRejectedValueOnce({
+        response: mockHttpResponse(),
+      });
+      const promise = sut.get(mockGetrequest());
+      expect(promise).toEqual(mockedAxios.get.mock.results[0].value);
+    });
   });
 });
