@@ -7,8 +7,8 @@ export enum HttpStatusCode {
   notFound = 404,
   serverError = 500,
 }
-
-export type HttpResponse<T> = {
+// o T é any pq se não for passado algum tipo ele vai ser qualquer um
+export type HttpResponse<T = any> = {
   statusCode: HttpStatusCode;
   body?: T;
 };
