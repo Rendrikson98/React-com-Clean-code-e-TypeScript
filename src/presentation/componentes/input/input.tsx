@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import Styles from './input-styles.scss';
 import Context from '@/presentation/contexts/form/form-context';
 
@@ -9,6 +9,8 @@ type Props = React.DetailedHTMLProps<
 
 const Input = (props: Props) => {
   const { state, setState } = useContext(Context);
+  const inputRef = useRef<HTMLInputElement>(); // informo que minha ref é do tipo input
+
   const error = state[`${props.name}Error`];
   const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
     event.target.readOnly = false;
@@ -31,11 +33,20 @@ const Input = (props: Props) => {
     <div className={Styles.inputWrap}>
       <input
         {...props}
+        ref={inputRef} // pego a refe do input
+        placeholder=" "
         data-testid={props.name}
         readOnly
         onFocus={enableInput}
         onChange={handleChange}
       />
+      <label
+        onClick={() => {
+          inputRef.current.focus(); // quando clico no label faço ele chamar o focus do input para disparar o css
+        }}
+      >
+        {props.placeholder}
+      </label>
       <span
         data-testid={`${props.name}-status`}
         title={getTitle()}
