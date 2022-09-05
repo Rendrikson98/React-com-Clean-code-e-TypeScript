@@ -11,12 +11,12 @@ import Signup from './Signup';
 import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test';
 import faker from 'faker';
 import { createMemoryHistory } from 'history';
-import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token';
+import { UpdateCurrentAccountMock } from '@/presentation/test/mock-save-access-token';
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
-  saveAccessTokenMock: SaveAccessTokenMock;
+  updateCurrentAccountMock: UpdateCurrentAccountMock;
 };
 
 type SutParams = {
@@ -29,20 +29,20 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError;
   const addAccountSpy = new AddAccountSpy();
-  const saveAccessTokenMock = new SaveAccessTokenMock();
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
   const sut = render(
     <HistoryRouter history={history}>
       <Signup
         validation={validationStub}
         addAccount={addAccountSpy}
-        saveAccessToken={saveAccessTokenMock}
+        updateCurrentAccount={updateCurrentAccountMock}
       />
     </HistoryRouter>
   );
   return {
     sut,
     addAccountSpy,
-    saveAccessTokenMock,
+    updateCurrentAccountMock,
   };
 };
 

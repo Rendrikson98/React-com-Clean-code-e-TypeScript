@@ -3,20 +3,20 @@ import { Footer, Form, Input, LoginHeader } from '../../componentes';
 import Styles from './login-styles.scss';
 import Context from '@/presentation/contexts/form/form-context';
 import { Validation } from '@/presentation/protocols/validation';
-import { Authentication, SaveAccessToken } from '@/domain/usecases';
+import { Authentication, UpdateCurrentAccount } from '@/domain/usecases';
 import { Link, useNavigate } from 'react-router-dom';
 import SubmitButton from '@/presentation/componentes/submit-button/submit-button';
 
 type Props = {
   validation: Validation;
   authentication: Authentication;
-  saveAccessToken: SaveAccessToken;
+  updateCurrentAccount: UpdateCurrentAccount;
 };
 
 const Login: React.FC<Props> = ({
   validation,
   authentication,
-  saveAccessToken,
+  updateCurrentAccount,
 }: Props) => {
   const history = useNavigate();
   const [state, setState] = useState({
@@ -56,7 +56,7 @@ const Login: React.FC<Props> = ({
         email: state.email,
         password: state.password,
       });
-      await saveAccessToken.save(account.accessToken);
+      await updateCurrentAccount.save(account);
       history('/');
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message });
