@@ -41,6 +41,43 @@
         margin-bottom: 24px;
         box-shadow: 0px 1px 3px -1px $black;
 
+        //quando o elemento estiver vazio
+        &:empty{
+          position: relative; //serve para a animação que tem position absolute se basei no tamanho do empty
+          overflow: hidden; //impede que elementos dentro dele transborde
+          background-repeat: no-repeat;
+          background-image: 
+            linear-gradient(to right, $disabledBackground, $disabledBackground), //fundo cinza das data
+            linear-gradient(to right, $disabledBackground, $disabledBackground), //fundo cinza das linha 1
+            linear-gradient(to right, $disabledBackground, $disabledBackground), //fundo cinza das linha 2
+            linear-gradient(to right, $disabledBackground, $disabledBackground), //fundo cinza das linha 3
+            linear-gradient(to right, $disabledBackground, $disabledBackground); //fundo cinza do botão
+          background-position: 
+            24px 55px, //posição da data
+            108px 77px, //posição da linha 1 
+            108px 97px, //posição da linha 2
+            108px 117px, //posição da linha 3
+            left 0 bottom 0; //posição do botão
+          background-size: 
+            60px 100px, //tamanho da data
+            200px 16px, //tomanho da linha 1
+            200px 16px, //tamanho da linha 2
+            150px 16px, //tamanho da linha 3
+            100% 40px; //tamanho do botão
+          
+            &::after{
+              content: '';
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              left: 0;
+              transform: translateX(-100%);
+              background-image: linear-gradient(to right, transparent , rgba($white, 0.2), transparent);
+              animation: shimmer 1s infinite;
+            }
+        }
+
         .surveyContent{
           display: flex;
           flex-direction: row;
@@ -128,5 +165,11 @@
         }
       }
     }
+  }
+}
+
+@keyframes shimmer {
+  100%{
+    transform: translateX(100%);
   }
 }
