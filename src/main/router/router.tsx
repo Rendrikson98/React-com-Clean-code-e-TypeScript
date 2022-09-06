@@ -10,7 +10,9 @@ const Router: React.FC = () => {
   return (
     //utizo meu contexto criado no presentation/contexts
     <ApiContext.Provider
-      value={{ setCurrentAccount: setCurrentAccountAdapter }}
+      value={{
+        setCurrentAccount: setCurrentAccountAdapter,
+      }}
     >
       <BrowserRouter>
         <Routes>
