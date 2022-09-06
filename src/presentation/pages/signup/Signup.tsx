@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Footer, Form, Input, LoginHeader } from '../../componentes';
 import Styles from './signup-style.scss';
 import Context from '@/presentation/contexts/form/form-context';
 import { Link, useNavigate } from 'react-router-dom';
 import { Validation } from '@/presentation/protocols/validation';
-import { AddAccount, UpdateCurrentAccount } from '@/domain/usecases';
+import { AddAccount } from '@/domain/usecases';
 import { AddAccountSpy } from '@/presentation/test';
 import SubmitButton from '@/presentation/componentes/submit-button/submit-button';
+import { ApiContext } from '@/presentation/contexts';
 
 type Props = {
   validation: Validation;
   addAccount: AddAccount;
-  updateCurrentAccount: UpdateCurrentAccount;
 };
 
-const Signup: React.FC<Props> = ({
-  validation,
-  addAccount,
-  updateCurrentAccount,
-}: Props) => {
+const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext);
   const history = useNavigate();
   const [state, setState] = useState({
     isLoading: false,
@@ -74,7 +71,7 @@ const Signup: React.FC<Props> = ({
         password: state.password,
         passwordConfirmation: state.passwordConfirmation,
       });
-      await updateCurrentAccount.save(account);
+      setCurrentAccount(account);
       history('/');
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message });

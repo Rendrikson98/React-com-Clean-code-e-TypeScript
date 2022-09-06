@@ -11,12 +11,13 @@ import Signup from './Signup';
 import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test';
 import faker from 'faker';
 import { createMemoryHistory } from 'history';
-import { UpdateCurrentAccountMock } from '@/presentation/test/mock-save-access-token';
+import { AccountModel } from '@/domain/models';
+import { ApiContext } from '@/presentation/contexts';
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
-  updateCurrentAccountMock: UpdateCurrentAccountMock;
+  setCurrentAccountMock: (account: AccountModel) => void;
 };
 
 type SutParams = {
@@ -29,20 +30,18 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError;
   const addAccountSpy = new AddAccountSpy();
-  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
+  const setCurrentAccountMock = jest.fn();
   const sut = render(
-    <HistoryRouter history={history}>
-      <Signup
-        validation={validationStub}
-        addAccount={addAccountSpy}
-        updateCurrentAccount={updateCurrentAccountMock}
-      />
-    </HistoryRouter>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <HistoryRouter history={history}>
+        <Signup validation={validationStub} addAccount={addAccountSpy} />
+      </HistoryRouter>
+    </ApiContext.Provider>
   );
   return {
     sut,
     addAccountSpy,
-    updateCurrentAccountMock,
+    setCurrentAccountMock,
   };
 };
 

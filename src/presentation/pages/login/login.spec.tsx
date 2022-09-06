@@ -12,14 +12,14 @@ import {
 } from '@testing-library/react';
 import Login from './login';
 import { ValidationStub, AuthenticationSpy } from '@/presentation/test';
-import { InvalidCredentialsError } from '@/domain/erros';
-import { UpdateCurrentAccountMock } from '@/presentation/test/mock-save-access-token';
 import { Helper } from '../../test';
+import { ApiContext } from '@/presentation/contexts';
+import { AccountModel } from '@/domain/models';
 
 type SutTypes = {
   sut: RenderResult;
   authenticationSpy: AuthenticationSpy;
-  updateCurrentAccountMock: UpdateCurrentAccountMock;
+  setCurrentAccountMock: (account: AccountModel) => void;
 };
 type SutParams = {
   validationError: string;
@@ -30,21 +30,19 @@ const history = createMemoryHistory({ initialEntries: ['/login'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
-  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
   validationStub.errorMessage = params?.validationError;
+  const setCurrentAccountMock = jest.fn();
   const sut = render(
-    <HistoryRouter history={history}>
-      <Login
-        validation={validationStub}
-        authentication={authenticationSpy}
-        updateCurrentAccount={updateCurrentAccountMock}
-      />
-    </HistoryRouter>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <HistoryRouter history={history}>
+        <Login validation={validationStub} authentication={authenticationSpy} />
+      </HistoryRouter>
+    </ApiContext.Provider>
   );
   return {
     sut,
     authenticationSpy,
-    updateCurrentAccountMock,
+    setCurrentAccountMock,
   };
 };
 

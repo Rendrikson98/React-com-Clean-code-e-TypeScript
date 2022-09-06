@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Footer, Form, Input, LoginHeader } from '../../componentes';
 import Styles from './login-styles.scss';
 import Context from '@/presentation/contexts/form/form-context';
 import { Validation } from '@/presentation/protocols/validation';
-import { Authentication, UpdateCurrentAccount } from '@/domain/usecases';
+import { Authentication } from '@/domain/usecases';
 import { Link, useNavigate } from 'react-router-dom';
 import SubmitButton from '@/presentation/componentes/submit-button/submit-button';
+import { ApiContext } from '@/presentation/contexts';
 
 type Props = {
   validation: Validation;
   authentication: Authentication;
-  updateCurrentAccount: UpdateCurrentAccount;
 };
 
-const Login: React.FC<Props> = ({
-  validation,
-  authentication,
-  updateCurrentAccount,
-}: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext);
   const history = useNavigate();
   const [state, setState] = useState({
     isLoading: false,
@@ -56,7 +53,7 @@ const Login: React.FC<Props> = ({
         email: state.email,
         password: state.password,
       });
-      await updateCurrentAccount.save(account);
+      setCurrentAccount(account);
       history('/');
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message });
