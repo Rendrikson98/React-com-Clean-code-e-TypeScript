@@ -60,8 +60,8 @@ describe('Login component', () => {
   test('Should start with initial state', () => {
     const validationError = 'Campo obrigatório';
     makeSut({ validationError });
-    Helper.testChildCount('error-wrap', 0);
-    Helper.testButtonIsDisable('submit', true);
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0);
+    expect(screen.getByTestId('submit')).toBeDisabled();
     Helper.testStatusForfield('name', validationError);
     Helper.testStatusForfield('email', validationError);
     Helper.testStatusForfield('password', validationError);
@@ -126,13 +126,13 @@ describe('Login component', () => {
     Helper.populateField('email');
     Helper.populateField('password');
     Helper.populateField('passwordConfirmation');
-    Helper.testButtonIsDisable('submit', false);
+    expect(screen.getByTestId('submit')).toBeEnabled();
   });
 
   test('Should show spinner on submit', async () => {
     makeSut();
     await simulateValidSubmit();
-    Helper.testElementExists('spinner');
+    expect(screen.getByTestId('spinner')).toBeTruthy();
   });
 
   test('Should call AddAccount with correct values', async () => {

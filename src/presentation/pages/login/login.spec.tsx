@@ -57,9 +57,9 @@ describe('Login component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words();
     makeSut({ validationError });
-    Helper.testChildCount('error-wrap', 0);
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0); //verifica a quantidade de itens na tela
     screen.getByTestId('submit') as HTMLButtonElement;
-    Helper.testButtonIsDisable('submit', true);
+    expect(screen.getByTestId('submit')).toBeDisabled();
     Helper.testStatusForfield('email', validationError);
     Helper.testStatusForfield('password', validationError);
   });
@@ -94,13 +94,13 @@ describe('Login component', () => {
     makeSut();
     Helper.populateField('email');
     Helper.populateField('password');
-    Helper.testButtonIsDisable('submit', false);
+    expect(screen.getByTestId('submit')).toBeEnabled();
   });
 
   test('Should show spinner on submit', async () => {
     makeSut();
     await simulateValidSubmit();
-    Helper.testElementExists('spinner');
+    expect(screen.getByTestId('spinner')).toBeTruthy();
   });
 
   test('Should call Authentication with correct values', async () => {
