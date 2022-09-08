@@ -10,7 +10,7 @@ const PrivateRouter: React.FC<HistoryRouterProps> = (
       <Route
         {...props}
         path={props.history.location.pathname}
-        element={<Navigate to="/login" replace />}
+        element={<Navigate to="/login" replace />} //parei no minuto 24:35
       />
     </Routes>
   ); //repassa a chamada
