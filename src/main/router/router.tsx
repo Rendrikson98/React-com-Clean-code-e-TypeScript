@@ -4,7 +4,10 @@ import MakeLogin from '@/main/factories/pages/login/login-factory';
 import MakeSignUp from '@/main/factories/pages/signUp/signUp-factory';
 import SurveyList from '@/presentation/pages/survey-list/survey-list';
 import ApiContext from '../../presentation/contexts/api/api-context';
-import { setCurrentAccountAdapter } from '../adapters/current-account-adapter';
+import {
+  getCurrentAccountAdapter,
+  setCurrentAccountAdapter,
+} from '../adapters/current-account-adapter';
 
 const Router: React.FC = () => {
   return (
@@ -12,6 +15,7 @@ const Router: React.FC = () => {
     <ApiContext.Provider
       value={{
         setCurrentAccount: setCurrentAccountAdapter,
+        getCurrentAccount: getCurrentAccountAdapter,
       }}
     >
       <BrowserRouter>
