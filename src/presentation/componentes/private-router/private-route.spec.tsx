@@ -2,12 +2,13 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import {
+  Route,
   Routes,
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
-import PrivateRoute from './private-route';
 import { ApiContext } from '@/presentation/contexts';
 import { mockAccountModel } from '@/domain/teste';
+import PrivateRouter from './private-route';
 
 type SutTypes = {
   history: MemoryHistory;
@@ -18,7 +19,12 @@ const makeSut = (account = mockAccountModel()): SutTypes => {
   render(
     <ApiContext.Provider value={{ getCurrentAccount: () => account }}>
       <HistoryRouter history={history}>
-        <PrivateRoute history={history} />
+        <Routes>
+          <Route
+            path={history.location.pathname}
+            element={<PrivateRouter />}
+          ></Route>
+        </Routes>
       </HistoryRouter>
     </ApiContext.Provider>
   );
