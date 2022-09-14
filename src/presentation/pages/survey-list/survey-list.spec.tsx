@@ -4,6 +4,7 @@ import SurveyList from './survey-list';
 import { LoadSuveyList } from '@/domain/usecases/load-suvery-list';
 import { SurveyModel } from '@/domain/models';
 import { mockSurveyListModel } from '@/domain/teste';
+import { UnexpectedError } from '@/domain/erros';
 
 class LoadSurveyListSpy implements LoadSuveyList {
   callsCount = 0;
@@ -18,8 +19,7 @@ type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy;
 };
 
-const makeSut = (): SutTypes => {
-  const loadSurveyListSpy = new LoadSurveyListSpy();
+const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   render(<SurveyList loadSurveyList={loadSurveyListSpy} />);
   return {
     loadSurveyListSpy,
@@ -44,4 +44,14 @@ describe('SurveyList Component', () => {
     await waitFor(() => screen.getAllByTestId('li'));
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(3);
   });
+  // test('should render SurveyItems on failure', async () => {
+  //   const loadSurveyListSpy = new LoadSurveyListSpy();
+  //   const error = new UnexpectedError();
+  //   jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValue(error); //mocando a função loadAll e definindo o seu retorno
+  //   makeSut(loadSurveyListSpy);
+  //   await waitFor(() => screen.getByRole('heading'));
+  //   screen.debug();
+  //   expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument();
+  //   expect(screen.getByTestId('error')).toHaveTextContent(error.message);
+  // });
 });

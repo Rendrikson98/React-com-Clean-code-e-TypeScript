@@ -1,6 +1,6 @@
 import { Icon, IconName } from '@/presentation/componentes';
 import React from 'react';
-import Styles from './survey-item-empty-style.scss';
+import Styles from './item-empty-style.scss';
 
 const SurveyItemEmpty: React.FC = () => {
   return (
