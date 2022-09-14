@@ -41,7 +41,7 @@ describe('SurveyList Component', () => {
   test('should render SurveyItems on success', async () => {
     makeSut();
     const surveyList = screen.getByTestId('survey-list');
-    await waitFor(() => surveyList);
+    await waitFor(() => screen.getAllByTestId('li'));
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(3);
   });
 });
