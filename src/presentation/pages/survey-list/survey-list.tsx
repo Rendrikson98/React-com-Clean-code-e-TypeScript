@@ -13,6 +13,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
   const [state, setState] = useState({
     surveys: [] as SurveyModel[],
     error: '',
+    reload: false,
   });
   useEffect(() => {
     const fetchLoading = async () => {
@@ -25,7 +26,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     };
 
     fetchLoading();
-  }, []);
+  }, [state.reload]);
   return (
     <div className={Styles.surveyListWrap}>
       <Header />
