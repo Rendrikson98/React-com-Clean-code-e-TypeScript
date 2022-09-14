@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { SurveyContext } from '..';
 import SurveyItemEmpty from '../item-empty/item-empty';
 import SurveyItem from '../item/item';
-import Styles from './list-styles.scss';
+import Styles from './list-style.scss';
 
 const List: React.FC = () => {
   const { state } = useContext(SurveyContext);
