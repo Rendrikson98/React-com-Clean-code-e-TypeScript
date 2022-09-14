@@ -15,7 +15,7 @@ const SurveyItem: React.FC<Props> = ({ survey }: Props) => {
         <Icon className={Styles.iconWrap} iconName={iconName} />
         <time>
           <span data-testid="day" className={Styles.day}>
-            {survey.date.getDate().toString().padStart(2, '0')}{' '}
+            {survey.date.getDate().toString().padStart(2, '0')}
             {/*o padStart serve para informar que vai ter no máximo 2 caractere e se não tiver adiciona o 0 no inicio*/}
           </span>
           <span data-testid="moth" className={Styles.month}>
