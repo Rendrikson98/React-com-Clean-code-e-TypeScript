@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import SurveyList from '../../survey-list';
+import SurveyList from './survey-list';
 import { LoadSuveyList } from '@/domain/usecases/load-suvery-list';
 import { SurveyModel } from '@/domain/models';
 
