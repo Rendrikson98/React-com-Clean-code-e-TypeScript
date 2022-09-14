@@ -2,5 +2,5 @@
 import { SurveyModel } from '../models';
 
 export interface LoadSuveyList {
-  loadAll(): Promise<SurveyModel>;
+  loadAll(): Promise<SurveyModel[]>;
 }
