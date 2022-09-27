@@ -5,7 +5,7 @@ import {
   HttpStatusCode,
 } from '../Protocols/http';
 
-export class HttpPostClientSpy<ResponseType>
+export class HttpPostClientSpy<ResponseType = any>
   implements HttpPostClient<ResponseType>
 {
   url?: string;
