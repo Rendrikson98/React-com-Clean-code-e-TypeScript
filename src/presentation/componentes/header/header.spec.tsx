@@ -7,18 +7,32 @@ import {
   Routes,
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, MemoryHistory } from 'history';
+import { AccountModel } from '@/domain/models';
+
+type SutTypes = {
+  history: MemoryHistory;
+  setCurrentAccountMock: (account: AccountModel) => void;
+};
+
+const makeSut = (): SutTypes => {
+  const history = createMemoryHistory({ initialEntries: ['/'] });
+  const setCurrentAccountMock = jest.fn();
+  render(
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <HistoryRouter history={history}>
+        <Header />
+      </HistoryRouter>
+    </ApiContext.Provider>
+  );
+  return {
+    history,
+    setCurrentAccountMock,
+  };
+};
 describe('Header Component', () => {
   test('Should call setCurrentAccount with null', async () => {
-    const history = createMemoryHistory({ initialEntries: ['/'] });
-    const setCurrentAccountMock = jest.fn();
-    render(
-      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
-        <HistoryRouter history={history}>
-          <Header />
-        </HistoryRouter>
-      </ApiContext.Provider>
-    );
+    const { history, setCurrentAccountMock } = makeSut();
     await act(async () => {
       await fireEvent.click(screen.getByTestId('logout'));
     });
