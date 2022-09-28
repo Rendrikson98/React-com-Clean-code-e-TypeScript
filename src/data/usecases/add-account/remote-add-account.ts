@@ -1,15 +1,14 @@
 import { HttpPostClient, HttpStatusCode } from '@/data/Protocols/http';
 import { EmailInUseError, UnexpectedError } from '@/domain/erros';
-import { AccountModel } from '@/domain/models';
-import { AddAccount, AddAccountParams } from '@/domain/usecases';
+import { AddAccount } from '@/domain/usecases';
 
 export class RemoteAddAccount implements AddAccount {
   constructor(
     private readonly url: string,
-    private readonly httpPostClient: HttpPostClient<AccountModel>
+    private readonly httpPostClient: HttpPostClient<RemoteAddAccount.Model>
   ) {}
 
-  async add(params: AddAccountParams): Promise<AccountModel> {
+  async add(params: AddAccount.Params): Promise<AddAccount.Model> {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params,
@@ -24,4 +23,9 @@ export class RemoteAddAccount implements AddAccount {
         throw new UnexpectedError();
     }
   }
+}
+//o nome dessa padrão é TypeAlias onde criamos um namespace com o mesmo nome da interface e usamos os tipos por meio de chamadas no namespace.
+//Nesse caso estamos criando um namespace para a classe, já que já fizemos a da interface na camada de domain
+export namespace RemoteAddAccount {
+  export type Model = AddAccount.Model;
 }

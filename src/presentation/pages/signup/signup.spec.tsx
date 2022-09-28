@@ -5,12 +5,12 @@ import Signup from './Signup';
 import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test';
 import faker from 'faker';
 import { createMemoryHistory } from 'history';
-import { AccountModel } from '@/domain/models';
 import { ApiContext } from '@/presentation/contexts';
+import { AddAccount } from '@/domain/usecases';
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy;
-  setCurrentAccountMock: (account: AccountModel) => void;
+  setCurrentAccountMock: (account: AddAccount.Model) => void;
 };
 
 type SutParams = {
