@@ -2,17 +2,16 @@ import React, { memo, useContext } from 'react';
 import Logo from '../logo/logo';
 import Styles from './header-styles.scss';
 import { ApiContext } from '@/presentation/contexts';
-import { useNavigate } from 'react-router-dom';
+import { useLogout } from '@/presentation/hooks';
 
 const Header: React.FC = () => {
-  const history = useNavigate();
-  const { setCurrentAccount, getCurrentAccount } = useContext(ApiContext);
-  const logout = (
+  const logout = useLogout();
+  const { getCurrentAccount } = useContext(ApiContext);
+  const buttonClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ): void => {
     event.preventDefault();
-    setCurrentAccount(undefined);
-    history('/login');
+    logout();
   };
   return (
     <header className={Styles.headerWrap}>
@@ -20,7 +19,11 @@ const Header: React.FC = () => {
         <Logo />
         <div className={Styles.logoutWrap}>
           <span data-testid="username">{getCurrentAccount().name}</span>
-          <a data-testid="logout" href="#" onClick={(event) => logout(event)}>
+          <a
+            data-testid="logout"
+            href="#"
+            onClick={(event) => buttonClick(event)}
+          >
             Sair
           </a>
         </div>
