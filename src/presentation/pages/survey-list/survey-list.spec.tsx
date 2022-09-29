@@ -2,8 +2,6 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import SurveyList from './survey-list';
 import { LoadSuveyList } from '@/domain/usecases/load-suvery-list';
-import { mockAccountModel, mockSurveyListModel } from '@/domain/teste';
-import { AccessDeniedError, UnexpectedError } from '@/domain/erros';
 import {
   Route,
   Routes,
@@ -12,6 +10,8 @@ import {
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { ApiContext } from '@/presentation/contexts';
 import { AccountModel } from '@/domain/models';
+import { mockSurveyListModel } from '@/domain/teste/mock-survey-list';
+import { mockAccountModel } from '@/domain/teste/mock-account';
 
 class LoadSurveyListSpy implements LoadSuveyList {
   callsCount = 0;
