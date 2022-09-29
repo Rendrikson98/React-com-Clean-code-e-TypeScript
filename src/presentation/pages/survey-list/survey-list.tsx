@@ -25,6 +25,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
         const surveys = await loadSurveyList.loadAll();
         setState({ ...state, surveys });
       } catch (error) {
+        //se der error de acesso negado ele limpa o local storage e manda o usuário para o login
         if (error instanceof AccessDeniedError) {
           setCurrentAccount(undefined);
           history('/login');

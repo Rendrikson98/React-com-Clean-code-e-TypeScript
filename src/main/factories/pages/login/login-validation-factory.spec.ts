@@ -1,5 +1,9 @@
-import { ValidationComposite } from '@/validation/validators';
-import { ValidationBuilder } from '@/validation/validators/builder/validation-builder';
+import {
+  EmailValidation,
+  MinLengthValidation,
+  RequiredFieldValidation,
+  ValidationComposite,
+} from '@/validation/validators';
 import { MakeLoginValidation } from './login-validation-factory';
 
 describe('LoginValidationFactory', () => {
@@ -7,8 +11,14 @@ describe('LoginValidationFactory', () => {
     const composite = MakeLoginValidation();
     expect(composite).toEqual(
       ValidationComposite.build([
-        ...ValidationBuilder.field('email').required().email().build(),
-        ...ValidationBuilder.field('password').required().min(5).build(),
+        //chama diretamente a classe do validador
+        new RequiredFieldValidation('email'),
+        new EmailValidation('email'),
+        new RequiredFieldValidation('password'),
+        new MinLengthValidation('password', 5),
+        //não utilizo dessa forma pq pode mascarar o resultado
+        // ...ValidationBuilder.field('email').required().email().build(),
+        // ...ValidationBuilder.field('password').required().min(5).build(),
       ])
     );
   });
