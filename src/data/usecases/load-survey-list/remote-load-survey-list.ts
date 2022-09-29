@@ -1,5 +1,5 @@
 import { HttpGetClient, HttpStatusCode } from '@/data/Protocols/http';
-import { UnexpectedError } from '@/domain/erros';
+import { AccessDeniedError, UnexpectedError } from '@/domain/erros';
 import { LoadSuveyList } from '@/domain/usecases/load-suvery-list';
 
 export class RemoteLoadSurveyList {
@@ -18,6 +18,8 @@ export class RemoteLoadSurveyList {
         );
       case HttpStatusCode.noContent:
         return [];
+      case HttpStatusCode.forbiden:
+        throw new AccessDeniedError();
       default:
         throw new UnexpectedError();
     }
