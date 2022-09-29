@@ -1,9 +1,7 @@
-import { AccessDeniedError } from '@/domain/erros';
 import { LoadSuveyList } from '@/domain/usecases/load-suvery-list';
 import { Footer, Header } from '@/presentation/componentes';
-import { ApiContext } from '@/presentation/contexts';
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useErrorHandler } from '@/presentation/hooks';
+import React, { useEffect, useState } from 'react';
 import { SurveyContext, SurveyListItem, Error } from './components';
 import Styles from './survey-list-styles.scss';
 
@@ -12,8 +10,9 @@ type Props = {
 };
 
 const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
-  const history = useNavigate();
-  const { setCurrentAccount } = useContext(ApiContext);
+  const handleError = useErrorHandler((error: Error) => {
+    setState({ ...state, error: error.message });
+  });
   const [state, setState] = useState({
     surveys: [] as LoadSuveyList.Model[],
     error: '',
@@ -25,13 +24,8 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
         const surveys = await loadSurveyList.loadAll();
         setState({ ...state, surveys });
       } catch (error) {
-        //se der error de acesso negado ele limpa o local storage e manda o usuário para o login
-        if (error instanceof AccessDeniedError) {
-          setCurrentAccount(undefined);
-          history('/login');
-        } else {
-          setState({ ...state, error: error.message });
-        }
+        //chamo meu hook que tranta o erro de acesso negado
+        handleError(error);
       }
     };
 
