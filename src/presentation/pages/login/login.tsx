@@ -26,19 +26,47 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     mainError: '',
   });
 
+  //Forma tradicional de ser feita
+  // useEffect(() => {
+  //   const { email, password } = state;
+  //   const formData = { email, password };
+  //   const emailError = validation.validate('email', formData);
+  //   const passwordError = validation.validate('password', formData);
+  //   // A utilização de callback no useState garante que um useState não sobrescreva o outro
+  //   setState((old) => ({
+  //     //Ao inves de fazer o destructure do estado diretamente a gente faz o estado antigo vindo da callback
+  //     ...old,
+  //     //Aplicando a validação dos inputs
+  //     emailError,
+  //     passwordError,
+  //     isFormInvalid: !!emailError || !!passwordError,
+  //   }));
+  // }, [state.email, state.password]);
+
   useEffect(() => {
+    validate('email');
+  }, [state.email]);
+
+  useEffect(() => {
+    validate('password');
+  }, [state.password]);
+
+  //função auxiliar que executa a lógica dentro do useEffect
+  const validate = (field: string): void => {
     const { email, password } = state;
     const formData = { email, password };
-    const emailError = validation.validate('email', formData);
-    const passwordError = validation.validate('password', formData);
-    setState({
-      ...state,
+    // A utilização de callback no useState garante que um useState não sobrescreva o outro
+    setState((old) => ({
+      //Ao inves de fazer o destructure do estado diretamente a gente faz o estado antigo vindo da callback
+      ...old,
       //Aplicando a validação dos inputs
-      emailError,
-      passwordError,
-      isFormInvalid: !!emailError || !!passwordError,
-    });
-  }, [state.email, state.password]);
+      [`${field}Error`]: validation.validate(`${field}`, formData),
+    }));
+    setState((old) => ({
+      ...old,
+      isFormInvalid: !!old.emailError || !!old.passwordError,
+    }));
+  };
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
