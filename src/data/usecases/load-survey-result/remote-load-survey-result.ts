@@ -1,23 +1,21 @@
 import { HttpGetClient, HttpStatusCode } from '@/data/Protocols/http';
 import { AccessDeniedError, UnexpectedError } from '@/domain/erros';
-import { LoadSuveyList } from '@/domain/usecases/load-suvery-list';
+import { LoadSuveyResult } from '@/domain/usecases/load-suvery-result';
 
-export class RemoteLoadSurveyList implements LoadSuveyList {
+export class RemoteLoadSurveyResult implements LoadSuveyResult {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyList.Model[]>
+    private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyResult.Model>
   ) {}
 
-  async loadAll(): Promise<LoadSuveyList.Model[]> {
+  async load(): Promise<LoadSuveyResult.Model> {
     const httpResponse = await this.httpGetClient.get({ url: this.url });
-    const remoteSurveys = httpResponse.body || []; //se httpResponse.body for vazio ou undefined troque por um array vazio []
+    const remoteSurveyResult = httpResponse.body;
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        return remoteSurveys.map((remoteSurvey) =>
-          Object.assign(remoteSurvey, { date: new Date(remoteSurvey.date) })
-        );
-      case HttpStatusCode.noContent:
-        return [];
+        return Object.assign({}, remoteSurveyResult, {
+          date: new Date(remoteSurveyResult.date),
+        });
       case HttpStatusCode.forbiden:
         throw new AccessDeniedError();
       default:
@@ -27,11 +25,15 @@ export class RemoteLoadSurveyList implements LoadSuveyList {
 }
 //o nome dessa padrão é TypeAlias onde criamos um namespace com o mesmo nome da interface e usamos os tipos por meio de chamadas no namespace.
 //Nesse caso estamos criando um namespace para a classe, já que já fizemos a da interface na camada de domain
-export namespace RemoteLoadSurveyList {
+export namespace RemoteLoadSurveyResult {
   export type Model = {
-    id: string;
     question: string;
-    date: string;
-    didAnswer: boolean;
+    date: Date;
+    answers: Array<{
+      image?: string;
+      answer: string;
+      count: number;
+      percent: number;
+    }>;
   };
 }
