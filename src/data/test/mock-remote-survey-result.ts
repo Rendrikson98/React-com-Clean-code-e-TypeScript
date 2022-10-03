@@ -10,11 +10,13 @@ export const mockRemoteSurveyResultModel =
         answer: faker.random.word(),
         count: faker.random.number(),
         percent: faker.random.number(),
+        isCurrentAccountAnswer: faker.random.boolean(),
       },
       {
         answer: faker.random.word(),
         count: faker.random.number(),
         percent: faker.random.number(),
+        isCurrentAccountAnswer: faker.random.boolean(),
       },
     ],
     date: faker.date.recent().toISOString(),
