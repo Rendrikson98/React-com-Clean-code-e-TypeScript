@@ -32,7 +32,7 @@ module.exports = merge(common, {
       writeToDisk: true
     },
     static: {
-      directory: './public'
+      directory: './dist'
     },
     port: 8080
   },

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "dev": "webpack-dev-server --config webpack.dev.js --open",
     "build": "webpack --config webpack.prod.js",
     "test": "cross-env NODE_ICU_DATA=node_modules/full-icu jest --passWithNoTests --no-cache --runInBand",
@@ -75,6 +76,8 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "express": "^4.18.1",
+    "express-history-api-fallback": "^2.2.1",
     "inline-chunk-html-plugin": "^1.1.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
