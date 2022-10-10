@@ -1,0 +1,3 @@
+describe('SurveyResult', () => {
+  it('', () => {});
+});
