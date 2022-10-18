@@ -6,8 +6,8 @@ type Props = React.HTMLAttributes<HTMLElement> & {
   isNegative?: boolean;
 };
 
-const Spinner: React.FC<Props> = (props: Props) => {
-  const negativeclass = props.isNegative ? Style.negative : '';
+const Spinner: React.FC<Props> = ({ isNegative, ...props }: Props) => {
+  const negativeclass = isNegative ? Style.negative : '';
   return (
     <div
       {...props}
