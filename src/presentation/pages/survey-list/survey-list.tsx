@@ -18,6 +18,15 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     error: '',
     reload: false,
   });
+
+  const reload = (): void => {
+    setState((old) => ({
+      surveys: [],
+      error: '',
+      reload: !old.reload,
+    }));
+  };
+
   useEffect(() => {
     const fetchLoading = async () => {
       try {
@@ -37,7 +46,11 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
       <div className={Styles.contentWrap}>
         <h2>Enquestes</h2>
         <SurveyContext.Provider value={{ state, setState }}>
-          {state.error ? <Error /> : <SurveyListItem />}
+          {state.error ? (
+            <Error error={state.error} reload={reload} />
+          ) : (
+            <SurveyListItem />
+          )}
         </SurveyContext.Provider>
       </div>
       <Footer />

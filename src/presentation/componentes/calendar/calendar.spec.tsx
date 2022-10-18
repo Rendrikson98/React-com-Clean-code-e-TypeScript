@@ -14,9 +14,9 @@ describe('CAlendar Component', () => {
     expect(screen.getByTestId('year')).toHaveTextContent('2020');
   });
   test('should render with correct values', () => {
-    makeSut(new Date('2020-01-10T00:00:00'));
+    makeSut(new Date('2020-05-03T00:00:00'));
     expect(screen.getByTestId('day')).toHaveTextContent('03');
     expect(screen.getByTestId('moth')).toHaveTextContent('mai');
-    expect(screen.getByTestId('year')).toHaveTextContent('2019');
+    expect(screen.getByTestId('year')).toHaveTextContent('2020');
   });
 });

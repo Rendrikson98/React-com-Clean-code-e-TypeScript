@@ -4,6 +4,8 @@ import Styles from './survey-result-style.scss';
 import FlipMove from 'react-flip-move';
 import Loading from '@/presentation/componentes/loading/loading';
 
+//Aula 7
+
 const SurveyResult: React.FC = () => {
   return (
     <div className={Styles.surveyResultWrap}>
