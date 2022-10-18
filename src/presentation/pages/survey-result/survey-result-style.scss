@@ -106,11 +106,12 @@
       img{
         width: 50px;
         height: 50px;
+        margin-right: 16px;
       }
 
       .answer{
         flex-grow: 1; //ocupa todo o espaço
-        margin: 0 16px;
+        margin-right: 16px;
         font-size: 20px;
       }
       .percent{
