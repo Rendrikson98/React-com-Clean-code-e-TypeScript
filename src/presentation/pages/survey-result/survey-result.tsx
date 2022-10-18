@@ -1,19 +1,26 @@
 import { Calendar, Footer, Header } from '@/presentation/componentes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Styles from './survey-result-style.scss';
 import FlipMove from 'react-flip-move';
 import Loading from '@/presentation/componentes/loading/loading';
 import { LoadSuveyResult } from '@/domain/usecases';
 import { Error } from '../survey-list/components';
+import { LoadSurveyResultSpy } from '@/domain/teste';
 
-//Aula 7
+type Props = {
+  loadSurveyResult: LoadSurveyResultSpy;
+};
 
-const SurveyResult: React.FC = () => {
+const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
   const [state] = useState({
     isLoading: false,
     error: '',
     surveyResult: null as LoadSuveyResult.Model,
   });
+
+  useEffect(() => {
+    loadSurveyResult.load().then().catch();
+  }, []);
   return (
     <div className={Styles.surveyResultWrap}>
       <Header />
