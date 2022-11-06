@@ -1,11 +1,23 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import SurveyItem from './item';
 import { mockSurveyModel } from '@/domain/teste';
 import { IconName } from '@/presentation/componentes';
+import { createMemoryHistory, MemoryHistory } from 'history';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 
-const makeSut = (survey = mockSurveyModel()): void => {
-  render(<SurveyItem survey={survey} />);
+type SutTypes = {
+  history: MemoryHistory;
+};
+
+const makeSut = (survey = mockSurveyModel()): SutTypes => {
+  const history = createMemoryHistory({ initialEntries: ['/'] });
+  render(
+    <HistoryRouter history={history}>
+      <SurveyItem survey={survey} />
+    </HistoryRouter>
+  );
+  return { history };
 };
 
 describe('SurveyItem Component', () => {
@@ -36,4 +48,11 @@ describe('SurveyItem Component', () => {
     expect(screen.getByTestId('moth')).toHaveTextContent('mai');
     expect(screen.getByTestId('year')).toHaveTextContent('2020');
   });
+  // test('should go to surveyResult', () => {
+  //   const survey = mockSurveyModel();
+  //   const { history } = makeSut(survey);
+
+  //   fireEvent.click(screen.getByTestId('link'));
+  //   expect(history.location.pathname).toBe(`/surveys/${survey.id}`);
+  // });
 });
