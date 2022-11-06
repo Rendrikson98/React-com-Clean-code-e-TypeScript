@@ -6,24 +6,38 @@ import Loading from '@/presentation/componentes/loading/loading';
 import { LoadSuveyResult } from '@/domain/usecases';
 import { Error } from '../survey-list/components';
 import { LoadSurveyResultSpy } from '@/domain/teste';
+import { useErrorHandler } from '@/presentation/hooks';
 
 type Props = {
   loadSurveyResult: LoadSurveyResultSpy;
 };
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState({ ...state, surveyResult: null, error: error.message });
+  });
   const [state, setState] = useState({
     isLoading: false,
     error: '',
     surveyResult: null as LoadSuveyResult.Model,
+    reload: false,
   });
+
+  const reload = (): void => {
+    setState((old) => ({
+      isLoading: false,
+      surveyResult: null,
+      error: '',
+      reload: !old.reload,
+    }));
+  };
 
   useEffect(() => {
     loadSurveyResult
       .load()
       .then((surveyResult) => setState((old) => ({ ...old, surveyResult })))
-      .catch();
-  }, []);
+      .catch(handleError);
+  }, [state.reload]);
 
   return (
     <div className={Styles.surveyResultWrap}>
@@ -66,7 +80,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
           </>
         )}
         {state.isLoading && <Loading />}
-        {state.error && <Error error={state.error} reload={() => {}} />}
+        {state.error && <Error error={state.error} reload={reload} />}
       </div>
       <Footer />
     </div>
