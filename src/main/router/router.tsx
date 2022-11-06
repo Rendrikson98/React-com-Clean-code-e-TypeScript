@@ -10,6 +10,7 @@ import {
 } from '../adapters/current-account-adapter';
 import PrivateRouter from '@/presentation/componentes/private-router/private-route';
 import { SurveyResult } from '@/presentation/pages';
+import { MakeRemoteSurveyResult } from '../factories/usecases/load-survey-result/remote-load-survey-result';
 
 const Router: React.FC = () => {
   return (
@@ -27,8 +28,8 @@ const Router: React.FC = () => {
           <Route path="/" element={<PrivateRouter />}>
             <Route path="/" element={<MakeSurveyList />} />
           </Route>
-          <Route path="/surveys" element={<PrivateRouter />}>
-            <Route path="/surveys" element={<SurveyResult />} />
+          <Route path="/surveys/:id" element={<PrivateRouter />}>
+            <Route path="/surveys/:id" element={MakeRemoteSurveyResult} />
           </Route>
         </Routes>
       </BrowserRouter>

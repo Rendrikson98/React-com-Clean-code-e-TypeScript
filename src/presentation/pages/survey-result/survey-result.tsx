@@ -9,7 +9,7 @@ import { LoadSurveyResultSpy } from '@/domain/teste';
 import { useErrorHandler } from '@/presentation/hooks';
 
 type Props = {
-  loadSurveyResult: LoadSurveyResultSpy;
+  loadSurveyResult: LoadSuveyResult;
 };
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
