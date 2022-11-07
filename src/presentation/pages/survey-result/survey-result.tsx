@@ -39,6 +39,10 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
       .catch(handleError);
   }, [state.reload]);
 
+  const goBack = (): void => {
+    window.history.back();
+  };
+
   return (
     <div className={Styles.surveyResultWrap}>
       <Header />
@@ -76,7 +80,9 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
                 </li>
               ))}
             </FlipMove>
-            <button>Voltar</button>
+            <button data-testid="back-button" onClick={goBack}>
+              Voltar
+            </button>
           </>
         )}
         {state.isLoading && <Loading />}
