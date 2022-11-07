@@ -1,27 +1,23 @@
 import { GetStorage } from '@/data/Protocols/cache';
-import {
-  HttpGetClient,
-  HttpGetParams,
-  HttpResponse,
-} from '@/data/Protocols/http';
+import { HttpClient, HttpRequest, HttpResponse } from '@/data/Protocols/http';
 
-export class AuthorizeHttpGetClientDecorator implements HttpGetClient {
+export class AuthorizeHttpClientDecorator implements HttpClient {
   constructor(
     private readonly getStorage: GetStorage,
-    private readonly httpGetClientSpy: HttpGetClient
+    private readonly httpClientSpy: HttpClient
   ) {}
-  async get(params: HttpGetParams): Promise<HttpResponse> {
+  async request(data: HttpRequest): Promise<HttpResponse> {
     const account = this.getStorage.get('account');
     //se não existir um account no localStorage ele simplesmente vai pular o if e retornar get da reequisição
     if (account?.accessToken) {
-      Object.assign(params, {
-        headers: Object.assign(params.headers || {}, {
+      Object.assign(data, {
+        headers: Object.assign(data.headers || {}, {
           //se o params.headers vier vazio ou undefined ele muda pra um objeto vazio {}
           'x-access-token': account.accessToken, //o 'x-access-token' é o nome de envio do token do back
         }),
       });
     }
-    const httpResponse = await this.httpGetClientSpy.get(params);
+    const httpResponse = await this.httpClientSpy.request(data);
     return httpResponse;
   }
 }

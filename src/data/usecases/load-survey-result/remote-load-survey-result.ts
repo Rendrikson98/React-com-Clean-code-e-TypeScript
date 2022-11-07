@@ -1,15 +1,18 @@
-import { HttpGetClient, HttpStatusCode } from '@/data/Protocols/http';
+import { HttpClient, HttpStatusCode } from '@/data/Protocols/http';
 import { AccessDeniedError, UnexpectedError } from '@/domain/erros';
 import { LoadSuveyResult } from '@/domain/usecases/load-suvery-result';
 
 export class RemoteLoadSurveyResult implements LoadSuveyResult {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyResult.Model>
+    private readonly httpClient: HttpClient<RemoteLoadSurveyResult.Model>
   ) {}
 
   async load(): Promise<LoadSuveyResult.Model> {
-    const httpResponse = await this.httpGetClient.get({ url: this.url });
+    const httpResponse = await this.httpClient.request({
+      url: this.url,
+      method: 'get',
+    });
     const remoteSurveyResult = httpResponse.body;
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
