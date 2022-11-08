@@ -19,7 +19,7 @@ export class RemoteSaveSurveyResult implements SaveSuveyResult {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
         return Object.assign({}, remoteSurveyResult, {
-          date: new Date(remoteSurveyResult.date),
+          date: new Date(remoteSurveyResult.date), //converte a data de formato de string retornado do servidor
         });
       case HttpStatusCode.forbiden:
         throw new AccessDeniedError();
