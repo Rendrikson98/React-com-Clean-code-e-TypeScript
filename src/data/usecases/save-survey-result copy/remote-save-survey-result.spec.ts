@@ -1,6 +1,7 @@
 import { HttpStatusCode } from '@/data/Protocols/http';
 import { HttpClientSpy, mockRemoteSurveyResultModel } from '@/data/test';
 import { AccessDeniedError, UnexpectedError } from '@/domain/erros';
+import { mockSaveSurveyResultParams } from '@/domain/teste';
 import faker from 'faker';
 import { RemoteSaveSurveyResult } from './remote-save-survey-result';
 
@@ -26,7 +27,7 @@ describe('RemoteLoadSurveyList', () => {
       statusCode: HttpStatusCode.ok,
       body: mockRemoteSurveyResultModel(),
     };
-    await sut.save({ answer: faker.random.word() });
+    await sut.save(mockSaveSurveyResultParams());
     expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.method).toBe('put');
   });
@@ -36,7 +37,7 @@ describe('RemoteLoadSurveyList', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbiden,
     };
-    const promise = sut.save({ answer: faker.random.word() });
+    const promise = sut.save(mockSaveSurveyResultParams());
     await expect(promise).rejects.toThrow(new AccessDeniedError());
   });
 
@@ -45,7 +46,7 @@ describe('RemoteLoadSurveyList', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound,
     };
-    const promise = sut.save({ answer: faker.random.word() });
+    const promise = sut.save(mockSaveSurveyResultParams());
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
@@ -54,7 +55,7 @@ describe('RemoteLoadSurveyList', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError,
     };
-    const promise = sut.save({ answer: faker.random.word() });
+    const promise = sut.save(mockSaveSurveyResultParams());
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
@@ -65,7 +66,7 @@ describe('RemoteLoadSurveyList', () => {
       statusCode: HttpStatusCode.ok,
       body: httpResult,
     };
-    const surveyResult = await sut.save({ answer: faker.random.word() });
+    const surveyResult = await sut.save(mockSaveSurveyResultParams());
     expect(surveyResult).toEqual({
       question: httpResult.question,
       answers: httpResult.answers,
