@@ -5,7 +5,9 @@ import { ApiContext } from '@/presentation/contexts';
 import {
   LoadSurveyResultSpy,
   mockAccountModel,
+  mockSaveSurveyResultParams,
   mockSurveyResultModel,
+  SaveSurveyResultSpy,
 } from '@/domain/teste';
 import { createMemoryHistory } from 'history';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
@@ -14,12 +16,15 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 
 type SutTypes = {
   loadSurveyResultspy: LoadSurveyResultSpy;
+  saveSurveyResultspy: SaveSurveyResultSpy;
 };
 
 const makeSut = (surveyResult = mockSurveyResultModel()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] });
   const loadSurveyResultspy = new LoadSurveyResultSpy();
   loadSurveyResultspy.surveyResult = surveyResult;
+
+  const saveSurveyResultspy = new SaveSurveyResultSpy();
   render(
     <ApiContext.Provider
       value={{
@@ -28,13 +33,17 @@ const makeSut = (surveyResult = mockSurveyResultModel()): SutTypes => {
       }}
     >
       <HistoryRouter history={history}>
-        <SurveyResult loadSurveyResult={loadSurveyResultspy} />
+        <SurveyResult
+          loadSurveyResult={loadSurveyResultspy}
+          saveSurveyResult={saveSurveyResultspy}
+        />
       </HistoryRouter>
     </ApiContext.Provider>
   );
 
   return {
     loadSurveyResultspy,
+    saveSurveyResultspy,
   };
 };
 describe('SurveyResult', () => {

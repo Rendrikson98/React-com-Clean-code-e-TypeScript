@@ -3,7 +3,7 @@ import { LoadSuveyResult } from '@/domain/usecases';
 import { makeAuthorizeHttpClientDecorator } from '../../decorators';
 import { MakeApiURL } from '../../http/api-url-factory';
 
-export const MakeRemoteSurveyResult = (id: string): LoadSuveyResult => {
+export const MakeRemoteLoadSurveyResult = (id: string): LoadSuveyResult => {
   return new RemoteLoadSurveyResult(
     MakeApiURL(`surveys/${id}/results`),
     makeAuthorizeHttpClientDecorator()

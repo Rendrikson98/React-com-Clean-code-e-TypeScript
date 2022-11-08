@@ -34,3 +34,10 @@ export class LoadSurveyResultSpy implements LoadSuveyResult {
     return this.surveyResult;
   }
 }
+export class SaveSurveyResultSpy implements SaveSuveyResult {
+  callsCount = 0;
+  answer = { answer: mockSaveSurveyResultParams() };
+  async save(answer): Promise<SaveSuveyResult.Model> {
+    return answer;
+  }
+}
