@@ -18,7 +18,12 @@ const SurveyResult: React.FC<Props> = ({
   saveSurveyResult,
 }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState({ ...state, surveyResult: null, error: error.message });
+    setState({
+      ...state,
+      surveyResult: null,
+      isLoading: false,
+      error: error.message,
+    });
   });
   const [state, setState] = useState({
     isLoading: false,
